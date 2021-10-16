@@ -16,7 +16,8 @@ class Nuvem(pygame.sprite.Sprite):
         self.rect.y = 50
 
     def update(self):
-        self.rect.x -= 0.5
-        if self.rect.x <= 0:
-            self.rect.x = self.pos_x_inicial
+        if self.rect.topright[0] < 0:
+            self.rect.x = self.largura
+        self.rect.x -= 8
+
         

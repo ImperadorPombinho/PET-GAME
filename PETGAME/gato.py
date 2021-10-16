@@ -13,7 +13,7 @@ class Gato(pygame.sprite.Sprite):
         self.image = self.sprites[self.index]
         self.rect = self.image.get_rect()
         self.rect.x = 150
-        self.rect.y = self.altura - (self.image.get_height() * 3)
+        self.rect.y = self.altura - 96
 
     def update(self):
         self.index += 0.5
