@@ -15,6 +15,8 @@ class Gato(pygame.sprite.Sprite):
         self.__pos_y_inicial = self.__altura - 96
         self.rect.x = 100
         self.rect.y = self.__pos_y_inicial
+        self.rect.h = self.image.get_height() - 30
+        self.rect.w = self.image.get_width() - 30
         self.pulou = False
         self.limite_de_pulou = 204
 
