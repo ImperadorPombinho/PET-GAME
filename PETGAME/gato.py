@@ -1,5 +1,4 @@
 import pygame
-import pygame
 from pygame.locals import *
 
 class Gato(pygame.sprite.Sprite):
@@ -19,22 +18,41 @@ class Gato(pygame.sprite.Sprite):
         self.rect.w = self.image.get_width() - 30
         self.pulou = False
         self.limite_de_pulou = 204
+        self.limitePulo = False
+        self.jumpPower = 10
+        self.terminalVelocity = 24
+        self.fallingSpeed = 0
 
     def pular(self):
         self.pulou = True
+    
+    def despular(self):
+        self.pulou = False
 
     @property
     def pos_y_inicial(self):
         return self.__pos_y_inicial
     
     def update(self):
-        if self.pulou:
-            self.rect.y -= 12
+        if self.rect.y <= self.limite_de_pulou:
+            self.despular()
+        if self.pulou and self.limitePulo == False:
+            self.fallingSpeed = self.fallingSpeed + (self.jumpPower/3)
+            if self.fallingSpeed < -1 * self.jumpPower:
+                self.fallingSpeed = self.jumpPower
+            self.rect.y -= self.fallingSpeed
             if self.rect.y <= self.limite_de_pulou:
-                self.pulou = False
+                self.limitePulo = True
+                self.fallingSpeed = -2
         else:
-            self.rect.y += 4.8
+            self.rect.y += self.fallingSpeed
+            self.fallingSpeed = self.fallingSpeed + (self.terminalVelocity/20)
+            if self.fallingSpeed > self.terminalVelocity:
+                self.fallingSpeed = self.terminalVelocity
+            if self.pulou and self.fallingSpeed > self.terminalVelocity / 3:
+                self.fallingSpeed = self.terminalVelocity / 3
             if self.rect.y >= self.pos_y_inicial:
+                self.limitePulo = False
                 self.rect.y = self.__pos_y_inicial
 
         self.__index += 0.5
