@@ -2,10 +2,12 @@ import pygame
 from pygame.font import SysFont
 from pygame.locals import *
 from sys import exit
+from obstaculo.passaro import Passaro
 from cenario.chao import Chao
 from gato import Gato
 from cenario.nuvem import Nuvem
 from obstaculo.cerca import Cerca
+from random import randint
 global pausou
 global recomeca
 pygame.init()
@@ -47,16 +49,26 @@ posicao_texto = {
         'lado': (largura - 100, altura - 460)
     }
 
+def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca):
+    obstaculo_escolhido = randint(0, 1)
+    obstaculo = None
+    escolhido = obstaculo_escolhido
+    if obstaculo_escolhido == 0:
+        obstaculo = passaro
+    else:
+        obstaculo = cerca
+    return obstaculo, escolhido
 def jogo_iniciado(score):
     todas_as_sprites.empty()
     gato = Gato(altura)
     todas_as_sprites.add(gato)
 
+    passaro = Passaro(largura, altura, velocidade)
     cerca = Cerca(altura, largura, velocidade)
-    todas_as_sprites.add(cerca)
-
-    lista_obstaculo = [cerca]
-
+    
+    lista_obstaculo = [passaro, cerca]
+    obs = obstaculo_aleatorio(passaro, cerca)
+    todas_as_sprites.add(obs[0])
     relogio = pygame.time.Clock()
 
     for  i in range(4):
@@ -99,6 +111,14 @@ def jogo_iniciado(score):
             game_over(score)
         else:
             score += 1
+        if obs[1] == 0 and obs[0].rect.topright[0] < 0:
+            todas_as_sprites.remove(passaro)
+            obs = obstaculo_aleatorio(passaro, cerca)
+            todas_as_sprites.add(obs[0])
+        elif obs[1] == 1 and obs[0].rect.topright[0] < 0:
+            todas_as_sprites.remove(cerca)
+            obs = obstaculo_aleatorio(passaro, cerca)
+            todas_as_sprites.add(obs[0])
         pygame.display.flip()
 
 def definir_texto(texto: str, fonte: SysFont):
