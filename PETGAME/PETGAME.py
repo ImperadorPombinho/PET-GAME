@@ -2,6 +2,7 @@ import pygame
 from pygame.font import SysFont
 from pygame.locals import *
 from sys import exit
+from obstaculo.patolion import PatoLion
 from obstaculo.passaro import Passaro
 from cenario.chao import Chao
 from gato import Gato
@@ -49,14 +50,16 @@ posicao_texto = {
         'lado': (largura - 100, altura - 460)
     }
 
-def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca):
-    obstaculo_escolhido = randint(0, 1)
+def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca, pato_lion: PatoLion):
+    obstaculo_escolhido = randint(0, 2)
     obstaculo = None
     escolhido = obstaculo_escolhido
     if obstaculo_escolhido == 0:
         obstaculo = passaro
-    else:
+    elif obstaculo_escolhido == 1:
         obstaculo = cerca
+    else:
+        obstaculo = pato_lion
     return obstaculo, escolhido
 def jogo_iniciado(score):
     todas_as_sprites.empty()
@@ -65,9 +68,10 @@ def jogo_iniciado(score):
 
     passaro = Passaro(largura, altura, velocidade)
     cerca = Cerca(altura, largura, velocidade)
-    
-    lista_obstaculo = [passaro, cerca]
-    obs = obstaculo_aleatorio(passaro, cerca)
+    pato_lion = PatoLion(largura, altura, velocidade)
+
+    lista_obstaculo = [passaro, cerca, pato_lion]
+    obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
     todas_as_sprites.add(obs[0])
     relogio = pygame.time.Clock()
 
@@ -113,12 +117,12 @@ def jogo_iniciado(score):
             score += 1
         if obs[1] == 0 and obs[0].rect.topright[0] < 0:
             todas_as_sprites.remove(passaro)
-            obs = obstaculo_aleatorio(passaro, cerca)
-            todas_as_sprites.add(obs[0])
         elif obs[1] == 1 and obs[0].rect.topright[0] < 0:
             todas_as_sprites.remove(cerca)
-            obs = obstaculo_aleatorio(passaro, cerca)
-            todas_as_sprites.add(obs[0])
+        elif obs[1] == 2 and obs[0].rect.topright[0] < 0:
+            todas_as_sprites.remove(pato_lion)
+        obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
+        todas_as_sprites.add(obs[0])
         pygame.display.flip()
 
 def definir_texto(texto: str, fonte: SysFont):
