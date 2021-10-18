@@ -24,7 +24,7 @@ pygame.display.set_caption('PETGAME')
 AZUL = (142, 211, 243)
 
 velocidade = 1
-loop_principal = True
+
 score = velocidade   
 
 
@@ -67,6 +67,7 @@ def jogo_iniciado(score):
         chao = Chao(i, altura, largura, velocidade)
         todas_as_sprites.add(chao)
     
+    loop_principal = True
     
     while loop_principal:
         for event in pygame.event.get():
@@ -74,11 +75,16 @@ def jogo_iniciado(score):
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN:
-                if event.key == K_SPACE:
+                if event.key == K_UP:
                     if gato.rect.y == gato.pos_y_inicial:
                         gato.pular()
                 if event.key == K_p:
+                    loop_principal = False
                     pausado()
+        if pygame.key.get_pressed()[K_LEFT]:
+            gato.segurou_pulo()
+        else:
+            gato.desegurou_pulo()
         relogio.tick(30)
         tela.fill(AZUL)
         exibir_mensagem(f'Pontos: {score}', posicao_texto['lado'])
@@ -89,6 +95,7 @@ def jogo_iniciado(score):
             print('colidiu')
             score = velocidade
             lista_colisao.clear()
+            loop_principal = False
             game_over(score)
         else:
             score += 1

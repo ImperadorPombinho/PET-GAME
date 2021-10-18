@@ -16,44 +16,39 @@ class Gato(pygame.sprite.Sprite):
         self.rect.y = self.__pos_y_inicial
         self.rect.h = self.image.get_height() - 30
         self.rect.w = self.image.get_width() - 30
-        self.pulou = False
-        self.limite_de_pulou = 204
-        self.limitePulo = False
-        self.jumpPower = 10
-        self.terminalVelocity = 24
-        self.fallingSpeed = 0
+        self.__tamanho_do_pulo = 15
+        self.__tamanho_do_pulo_segurado = 8
+        self.__pulou = False
+        self.__limite_de_pulou = 204
+        self.__segurou_pulo = False
 
     def pular(self):
-        self.pulou = True
-    
-    def despular(self):
-        self.pulou = False
+        self.__pulou = True
 
+    def segurou_pulo(self):
+        self.__segurou_pulo = True
+    def desegurou_pulo(self):
+        self.__segurou_pulo = False
+    
     @property
     def pos_y_inicial(self):
         return self.__pos_y_inicial
     
     def update(self):
-        if self.rect.y <= self.limite_de_pulou:
-            self.despular()
-        if self.pulou and self.limitePulo == False:
-            self.fallingSpeed = self.fallingSpeed + (self.jumpPower/3)
-            if self.fallingSpeed < -1 * self.jumpPower:
-                self.fallingSpeed = self.jumpPower
-            self.rect.y -= self.fallingSpeed
-            if self.rect.y <= self.limite_de_pulou:
-                self.limitePulo = True
-                self.fallingSpeed = -2
+        if self.__pulou:
+            self.rect.y -= self.__tamanho_do_pulo
+            if self.rect.y <= self.__limite_de_pulou:
+                self.__pulou = False
         else:
-            self.rect.y += self.fallingSpeed
-            self.fallingSpeed = self.fallingSpeed + (self.terminalVelocity/20)
-            if self.fallingSpeed > self.terminalVelocity:
-                self.fallingSpeed = self.terminalVelocity
-            if self.pulou and self.fallingSpeed > self.terminalVelocity / 3:
-                self.fallingSpeed = self.terminalVelocity / 3
-            if self.rect.y >= self.pos_y_inicial:
-                self.limitePulo = False
-                self.rect.y = self.__pos_y_inicial
+            if self.__segurou_pulo:
+                self.rect.y += self.__tamanho_do_pulo_segurado
+                if self.rect.y >= self.__pos_y_inicial:
+                    self.rect.y = self.__pos_y_inicial
+                    self.__segurou_pulo = False
+            else:
+                self.rect.y += self.__tamanho_do_pulo
+                if self.rect.y >= self.__pos_y_inicial:
+                    self.rect.y = self.__pos_y_inicial
 
         self.__index += 0.5
         if self.__index >= len(self.__sprites):
