@@ -26,6 +26,7 @@ class Gato(pygame.sprite.Sprite):
         self.__pulou = True
 
     def segurou_pulo(self):
+        self.image = self.__sprites[1]
         self.__segurou_pulo = True
     def desegurou_pulo(self):
         self.__segurou_pulo = False
@@ -35,8 +36,14 @@ class Gato(pygame.sprite.Sprite):
         return self.__pos_y_inicial
     
     def update(self):
+        self.__index += 0.5
+        if self.__index >= len(self.__sprites):
+            self.__index = 0
+        self.image = self.__sprites[int(self.__index)]
+
         if self.__pulou:
             self.rect.y -= self.__tamanho_do_pulo
+            self.image = self.__sprites[1]
             if self.rect.y <= self.__limite_de_pulou:
                 self.__pulou = False
         else:
@@ -46,12 +53,12 @@ class Gato(pygame.sprite.Sprite):
                     self.rect.y = self.__pos_y_inicial
                     self.__segurou_pulo = False
             else:
+                self.image = self.__sprites[1]
                 self.rect.y += self.__tamanho_do_pulo
                 if self.rect.y >= self.__pos_y_inicial:
                     self.rect.y = self.__pos_y_inicial
+                    self.image = self.__sprites[int(self.__index)]
+        
 
-        self.__index += 0.5
-        if self.__index >= len(self.__sprites):
-            self.__index = 0
-        self.image = self.__sprites[int(self.__index)]
+
     
