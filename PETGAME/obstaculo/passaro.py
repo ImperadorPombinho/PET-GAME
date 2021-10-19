@@ -7,17 +7,17 @@ class Passaro(pygame.sprite.Sprite):
         self.__largura_da_tela = largura
         self.__altura_da_tela = altura
         self. __sprites = []
-        for i in range(1, 6):
-            self.__sprites.append(pygame.image.load(f'assets/sprites/passaro/passaro-{i}.png'))
+        for i in range(1, 4):
+            self.__sprites.append(pygame.image.load(f'assets/sprites/passaro/passaro_sprite_{i}.png'))
         self.__velocidade_do_passaro = velocidade * 10
         self.__index = 0
         self.image = self.__sprites[self.__index]
         self.rect = self.image.get_rect()
         self.rect.x = self.__largura_da_tela - 96
-        self.__pos_chao = self.__altura_da_tela - 100
-        self.rect.y = randrange(350, self.pos_chao, 50)
-        self.rect.h = self.image.get_height() - 30
-        self.rect.w = self.image.get_width() - 30
+        self.__pos_chao = self.__altura_da_tela - 96
+        self.rect.y = randrange(380, self.pos_chao, 50)
+        self.rect.h = self.image.get_height() - 20
+        self.rect.w = self.image.get_width() - 20
 
     @property
     def pos_chao(self):

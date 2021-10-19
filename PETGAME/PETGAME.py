@@ -117,12 +117,17 @@ def jogo_iniciado(score):
             score += 1
         if obs[1] == 0 and obs[0].rect.topright[0] < 0:
             todas_as_sprites.remove(passaro)
+            obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
+            todas_as_sprites.add(obs[0])
         elif obs[1] == 1 and obs[0].rect.topright[0] < 0:
             todas_as_sprites.remove(cerca)
+            obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
+            todas_as_sprites.add(obs[0])
         elif obs[1] == 2 and obs[0].rect.topright[0] < 0:
             todas_as_sprites.remove(pato_lion)
-        obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
-        todas_as_sprites.add(obs[0])
+            obs = obstaculo_aleatorio(passaro, cerca, pato_lion)
+            todas_as_sprites.add(obs[0])
+        
         pygame.display.flip()
 
 def definir_texto(texto: str, fonte: SysFont):

@@ -1,2 +1,0 @@
-### SPRITES
-sprites aqui
