@@ -13,7 +13,7 @@ class Passaro(pygame.sprite.Sprite):
         self.__index = 0
         self.image = self.__sprites[self.__index]
         self.rect = self.image.get_rect()
-        self.rect.x = self.__largura_da_tela - 96
+        self.rect.x = self.__largura_da_tela
         self.__pos_chao = self.__altura_da_tela - 96
         self.rect.y = randrange(380, self.pos_chao, 50)
         self.rect.h = self.image.get_height() - 20

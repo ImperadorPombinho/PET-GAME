@@ -10,7 +10,7 @@ class Cerca(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.__velocidade_cerca = velocidade * 10
         self.rect.y = self.__altura_da_tela - (self.image.get_height() * 1.4)
-        self.rect.x = self.__largura_da_tela - self.image.get_width()
+        self.rect.x = self.__largura_da_tela
         self.rect.h = self.image.get_height() - 10
         self.rect.w = self.image.get_width() - 10
 

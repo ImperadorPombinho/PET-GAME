@@ -1,0 +1,1 @@
+musica de fundo, game over e som de pulo e talvez som de colisão aqui

@@ -7,16 +7,14 @@ class PatoLion(pygame.sprite.Sprite):
         self.__largura_da_tela = largura
         self.__altura_da_tela = altura
         self.__sprites = []
-        self.__sprites.append(pygame.image.load('assets/sprites/patolion/sprite_leao_pato.png'))
-        '''
-        for i in range(1, 6):
-            self.__sprites.append(pygame.image.load(f'caminho aqui'))
-        '''
+        for i in range(1, 4):
+            self.__sprites.append(pygame.image.load(f'assets/sprites/patolion/sprite_leao_pato_{i}.png'))
+
         self.__index = 0
         self.__velocidade_lion = velocidade * 10
         self.image = self.__sprites[self.__index]
         self.rect = self.image.get_rect()
-        self.rect.x = self.__largura_da_tela - self.image.get_width()
+        self.rect.x = self.__largura_da_tela
         self.rect.y = self.__altura_da_tela - 96
         self.rect.h = self.image.get_height() - 30
         self.rect.w = self.image.get_width() - 30
