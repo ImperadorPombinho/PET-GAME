@@ -14,7 +14,7 @@ global recomeca
 pygame.init()
 todas_as_sprites  = pygame.sprite.Group()
 COR_DO_TEXTO = (28 ,31, 66)
-fonte = pygame.font.SysFont('', 35, True, False)
+
 largura = 700
 altura = 500
 
@@ -32,7 +32,6 @@ score = velocidade
 
 
 textos_jogo = {
-        'ponto': f'Pontos: {score}',
         'pausou': {
             'texto': 'PAUSADO',
             'ajuda': 'Aperte P para despausar'
@@ -40,14 +39,16 @@ textos_jogo = {
         'perdeu': {
             'texto': 'GAME OVER',
             'ajuda': 'Aperte R para reiniciar o jogo'
-        }
+        },
+        'credito': 'Music: www.bensound.com'
 
     }
 posicao_texto = {
         'centro': (largura / 2, altura / 2),
         'baixo': ((largura / 2), (altura / 2 + 100)),
         'alto': (largura / 2, (altura / 2 - 100)),
-        'lado': (largura - 100, altura - 460)
+        'lado_dir': (largura - 100, altura - 460),
+        'lado_esq': (largura - 600, altura - 460)
     }
 
 def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca, pato_lion: PatoLion):
@@ -62,6 +63,10 @@ def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca, pato_lion: PatoLion):
         obstaculo = pato_lion
     return obstaculo, escolhido
 def jogo_iniciado(score):
+    musica_de_fundo = pygame.mixer.music.load('assets/musics/bensound-sweet.mp3')
+    pygame.mixer.music.set_volume(0.5)
+    pulo = pygame.mixer.Sound('assets/musics/smb_jump-small.wav')
+    pulo.set_volume(0.8)
     todas_as_sprites.empty()
     gato = Gato(altura)
     todas_as_sprites.add(gato)
@@ -82,9 +87,9 @@ def jogo_iniciado(score):
     for i in range(int(largura*2.5) // 96):
         chao = Chao(i, altura, largura, velocidade)
         todas_as_sprites.add(chao)
-    
+    global loop_principal
     loop_principal = True
-    
+    pygame.mixer.music.play(-1)
     while loop_principal:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -94,8 +99,8 @@ def jogo_iniciado(score):
                 if event.key == K_UP:
                     if gato.rect.y == gato.pos_y_inicial:
                         gato.pular()
+                        pulo.play()
                 if event.key == K_p:
-                    loop_principal = False
                     pausado()
         if pygame.key.get_pressed()[K_LEFT]:
             gato.segurou_pulo()
@@ -103,7 +108,9 @@ def jogo_iniciado(score):
             gato.desegurou_pulo()
         relogio.tick(30)
         tela.fill(AZUL)
-        exibir_mensagem(f'Pontos: {score}', posicao_texto['lado'])
+        exibir_mensagem(f'Pontos: {score}', posicao_texto['lado_dir'],35)
+        if score <= 50:
+            exibir_mensagem(textos_jogo['credito'], posicao_texto['lado_esq'], 20)
         todas_as_sprites.draw(tela)
         todas_as_sprites.update()   
         lista_colisao = pygame.sprite.spritecollide(gato, lista_obstaculo, False)
@@ -131,18 +138,21 @@ def jogo_iniciado(score):
         pygame.display.flip()
 
 def definir_texto(texto: str, fonte: SysFont):
+    
     texto_formatado = fonte.render(texto, True, COR_DO_TEXTO)
     return texto_formatado, texto_formatado.get_rect()
 
-def exibir_mensagem(mensagem, posicao):
+def exibir_mensagem(mensagem, posicao, num_fonte):
+    fonte = pygame.font.SysFont('', num_fonte, True, False)
     texto_formatado, texto_rect = definir_texto(mensagem, fonte)
     texto_rect.center = posicao
     tela.blit(texto_formatado, texto_rect)
 
 def pausado():
+    pygame.mixer.music.pause()
     pausou = True
-    exibir_mensagem(textos_jogo['pausou']['texto'], posicao_texto['centro'])
-    exibir_mensagem(textos_jogo['pausou']['ajuda'], posicao_texto['baixo'])
+    exibir_mensagem(textos_jogo['pausou']['texto'], posicao_texto['centro'], 35)
+    exibir_mensagem(textos_jogo['pausou']['ajuda'], posicao_texto['baixo'], 35)
     todas_as_sprites.update()
     while pausou:
         for event in pygame.event.get():
@@ -152,12 +162,17 @@ def pausado():
             if event.type == KEYDOWN:
                 if event.key == K_p:
                     pausou = False
+                    pygame.mixer.music.unpause()
         pygame.display.flip()
 
 def game_over(score):
+    pygame.mixer.music.pause()
+    terminou = pygame.mixer.Sound('assets/musics/smb_mariodie.wav')
+    terminou.set_volume(0.5)
     recomeca = True
-    exibir_mensagem(textos_jogo['perdeu']['texto'], posicao_texto['centro'])
-    exibir_mensagem(textos_jogo['perdeu']['ajuda'], posicao_texto['baixo'])
+    terminou.play()
+    exibir_mensagem(textos_jogo['perdeu']['texto'], posicao_texto['centro'],35)
+    exibir_mensagem(textos_jogo['perdeu']['ajuda'], posicao_texto['baixo'],35)
     while recomeca:
         for event in pygame.event.get():
             if event.type == QUIT:
