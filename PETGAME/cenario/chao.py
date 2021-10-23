@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
-
+from file import diretorio_images
+import os
 
 class Chao(pygame.sprite.Sprite):
     def __init__(self, pos_x, altura, largura, velocidade):
@@ -8,7 +9,7 @@ class Chao(pygame.sprite.Sprite):
         self.velocidade_chao = velocidade * 10
         self.altura_da_tela = altura
         self.largura_da_tela = largura
-        self.image = pygame.image.load('assets/image/chao.png')
+        self.image = pygame.image.load(os.path.join(diretorio_images,'chao.png'))
         self.rect = self.image.get_rect()
         self.rect.x = pos_x * self.image.get_width()
         self.rect.y = self.altura_da_tela - self.image.get_height()

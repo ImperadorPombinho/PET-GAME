@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 from random import randrange
+from file import diretorio_passaro
+import os
 class Passaro(pygame.sprite.Sprite):
     def __init__(self, largura, altura, velocidade):
         pygame.sprite.Sprite.__init__(self)
@@ -8,7 +10,7 @@ class Passaro(pygame.sprite.Sprite):
         self.__altura_da_tela = altura
         self. __sprites = []
         for i in range(1, 4):
-            self.__sprites.append(pygame.image.load(f'assets/sprites/passaro/passaro_sprite_{i}.png'))
+            self.__sprites.append(pygame.image.load(os.path.join(diretorio_passaro ,f'passaro_sprite_{i}.png')))
         self.__velocidade_do_passaro = velocidade * 10
         self.__index = 0
         self.image = self.__sprites[self.__index]

@@ -1,13 +1,14 @@
 import pygame
 from pygame.locals import *
-
+from file import diretorio_gato
+import os
 class Gato(pygame.sprite.Sprite):
     def __init__(self, altura):
         pygame.sprite.Sprite.__init__(self)
         self.__altura = altura
         self.__sprites = []
         for i in range(1, 4):
-            self.__sprites.append(pygame.image.load(f'assets/sprites/gato/gato_sprite_{i}.png'))
+            self.__sprites.append(pygame.image.load(os.path.join(diretorio_gato , f'gato_sprite_{i}.png')))
         self.__index = 0
         self.image = self.__sprites[self.__index]
         self.rect = self.image.get_rect()

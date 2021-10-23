@@ -9,10 +9,13 @@ from Gatos.gato import Gato
 from cenario.nuvem import Nuvem
 from obstaculo.cerca import Cerca
 from random import randint
+from file import diretorio_musics
+import os
 
 global pausou
 global recomeca
 pygame.init()
+pygame.mixer.init()
 todas_as_sprites  = pygame.sprite.Group()
 COR_DO_TEXTO = (28 ,31, 66)
 
@@ -64,9 +67,9 @@ def obstaculo_aleatorio(passaro: Passaro, cerca: Cerca, pato_lion: PatoLion):
         obstaculo = pato_lion
     return obstaculo, escolhido
 def jogo_iniciado(score):
-    musica_de_fundo = pygame.mixer.music.load('PETGAME/assets/musics/bensound-sweet.mp3')
+    musica_de_fundo = pygame.mixer.music.load(os.path.join(diretorio_musics, 'bensound-sweet.mp3'))
     pygame.mixer.music.set_volume(0.5)
-    pulo = pygame.mixer.Sound('PETGAME/assets/musics/smb_jump-small.wav')
+    pulo = pygame.mixer.Sound(os.path.join(diretorio_musics, 'smb_jump-small.wav'))
     pulo.set_volume(0.8)
     todas_as_sprites.empty()
     gato = Gato(altura)
@@ -168,7 +171,7 @@ def pausado():
 
 def game_over(score):
     pygame.mixer.music.pause()
-    terminou = pygame.mixer.Sound('PETGAME/assets/musics/smb_mariodie.wav')
+    terminou = pygame.mixer.Sound(os.path.join(diretorio_musics, 'smb_mariodie.wav'))
     terminou.set_volume(0.5)
     recomeca = True
     terminou.play()

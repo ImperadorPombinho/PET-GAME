@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
-
+from file import diretorio_patolion
+import os
 class PatoLion(pygame.sprite.Sprite):
     def __init__(self, largura, altura, velocidade):
         pygame.sprite.Sprite.__init__(self)
@@ -8,7 +9,7 @@ class PatoLion(pygame.sprite.Sprite):
         self.__altura_da_tela = altura
         self.__sprites = []
         for i in range(1, 4):
-            self.__sprites.append(pygame.image.load(f'assets/sprites/patolion/sprite_leao_pato_{i}.png'))
+            self.__sprites.append(pygame.image.load(os.path.join(diretorio_patolion, f'sprite_leao_pato_{i}.png')))
 
         self.__index = 0
         self.__velocidade_lion = velocidade * 10
