@@ -181,6 +181,7 @@ def game_over(score):
             if event.type == KEYDOWN:
                 if event.key == K_r:
                     print('recomeçar aqui')
+                    terminou.stop()
                     recomeca = False
                     jogo_iniciado(score)
         pygame.display.flip()
